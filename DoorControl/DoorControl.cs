@@ -8,17 +8,58 @@ namespace DoorControl
 {
     public class DoorControl
     {
-        private bool _isDoorOpen;
+        private DoorStates currentState;
 
-        public DoorControl()
+        public enum DoorStates
         {
-            _isDoorOpen = false;
+            DoorClosed,
+            DoorOpening,
+            DoorOpen
         }
 
-        public bool IsDoorOpen()
-        {
+        private IDoor _door;
+        private IUserValidation _userValidation;
+        private IEntryNotification _entryNotification;
 
-            return _isDoorOpen; 
+        public DoorControl(IDoor door, IUserValidation userValidation, IEntryNotification entryNotification, DoorStates currentState)
+        {
+            _door = door;
+            _userValidation = userValidation;
+            _entryNotification = entryNotification;
+            currentState = DoorStates.DoorClosed;
+        }
+
+
+        public void RequestEntry(string id)
+        {
+            if (_userValidation.ValidateEntryRequest(id))
+            {
+                _door.Open();
+
+                _entryNotification.NotifyEntryGranted();
+
+                currentState = DoorStates.DoorOpening;
+            }
+
+
+
+        }
+
+        public void DoorOpened()
+        {
+            if (currentState == DoorStates.DoorOpening)
+            {
+                _door.Close();
+
+                currentState = DoorStates.DoorOpen;
+            }
+
+        }
+
+        public void DoorClosed()
+        {
+            if (currentState == DoorStates.DoorOpen)
+                currentState = DoorStates.DoorClosed;
         }
     }
 }
