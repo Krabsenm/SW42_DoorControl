@@ -41,6 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DoorControl.cs" />
+    <Compile Include="IDoor.cs" />
+    <Compile Include="IEntryNotification.cs" />
+    <Compile Include="IUserValidation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
