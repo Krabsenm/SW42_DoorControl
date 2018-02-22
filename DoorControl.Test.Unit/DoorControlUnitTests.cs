@@ -9,13 +9,5 @@ namespace DoorControl.Test.Unit
 {
     public class DoorControlUnitTests
     {
-        [Test]
-        public void IsDoorOpen_testsState_ReturnsFalse()
-        {
-            var uut = new DoorControl();
-
-          
-            Assert.That(uut.IsDoorOpen(), Is.EqualTo(false));
-        }
     }
 }
