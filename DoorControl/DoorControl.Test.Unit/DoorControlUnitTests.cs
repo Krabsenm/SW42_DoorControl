@@ -13,6 +13,7 @@ namespace DoorControl.Test.Unit
         public void IsDoorOpen_testsState_ReturnsFalse()
         {
             var uut = new DoorControl();
+
           
             Assert.That(uut.IsDoorOpen(), Is.EqualTo(false));
         }

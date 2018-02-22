@@ -17,6 +17,7 @@ namespace DoorControl
 
         public bool IsDoorOpen()
         {
+
             return _isDoorOpen; 
         }
     }
