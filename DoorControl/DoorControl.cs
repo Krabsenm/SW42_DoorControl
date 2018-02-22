@@ -14,18 +14,21 @@ namespace DoorControl
         {
             DoorClosed,
             DoorOpening,
-            DoorOpen
+            DoorOpen,
+            DoorBreached
         }
 
         private IDoor _door;
         private IUserValidation _userValidation;
         private IEntryNotification _entryNotification;
+        private IAlarm _alarm;
 
-        public DoorControl(IDoor door, IUserValidation userValidation, IEntryNotification entryNotification, DoorStates currentState)
+        public DoorControl(IDoor door, IUserValidation userValidation, IEntryNotification entryNotification, IAlarm alarm)
         {
             _door = door;
             _userValidation = userValidation;
             _entryNotification = entryNotification;
+            _alarm = alarm;
             currentState = DoorStates.DoorClosed;
         }
 
@@ -41,6 +44,11 @@ namespace DoorControl
                 currentState = DoorStates.DoorOpening;
             }
 
+            else
+            {
+                _entryNotification.NotifyEntryDenied();
+            }
+
 
 
         }
@@ -52,6 +60,14 @@ namespace DoorControl
                 _door.Close();
 
                 currentState = DoorStates.DoorOpen;
+            }
+            else
+            {
+                _door.Close();
+
+                _alarm.SignalAlarm();
+
+                currentState = DoorStates.DoorBreached;
             }
 
         }
