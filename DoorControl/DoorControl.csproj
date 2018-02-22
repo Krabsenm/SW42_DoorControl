@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Door.cs" />
     <Compile Include="DoorControl.cs" />
     <Compile Include="IDoor.cs" />
     <Compile Include="IEntryNotification.cs" />
