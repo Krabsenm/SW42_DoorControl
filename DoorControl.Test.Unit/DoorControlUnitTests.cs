@@ -80,5 +80,18 @@ namespace DoorControl.Test.Unit
         }
 
 
+        [Test]
+        public void HandleDoorClosedEvent_DoorClosed_returnsTrue()
+        {
+            //arrange
+            _door.DoorOpenedEvent += Raise.EventWith(new DoorOpenedEventArgs());
+
+            //Act
+            _door.DoorClosedEvent += Raise.EventWith(new DoorClosedEventArgs());
+
+            
+        }
+
+
     }
 }
