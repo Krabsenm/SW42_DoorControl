@@ -8,9 +8,9 @@ namespace DoorControl
 {
     public class DoorControl
     {
-        private DoorStates currentState;
+        private DoorControl.DoorStates currentState;
 
-        public enum DoorStates
+        private enum DoorStates
         {
             DoorClosed,
             DoorOpening,
@@ -30,6 +30,9 @@ namespace DoorControl
             _entryNotification = entryNotification;
             _alarm = alarm;
             currentState = DoorStates.DoorClosed;
+
+            _door.DoorOpenedEvent += HandleDoorOpenedEvent;
+            _door.DoorClosedEvent += HandleDoorClosedEvent;
         }
 
 
@@ -53,29 +56,33 @@ namespace DoorControl
 
         }
 
-        public void DoorOpened()
+
+        public void HandleDoorOpenedEvent(object source, DoorOpenedEventArgs args)
         {
-            if (currentState == DoorStates.DoorOpening)
+            switch (currentState)
             {
-                _door.Close();
+                case DoorStates.DoorOpening:
+                    _door.Close();
+                    currentState = DoorStates.DoorOpen;
+                    break;
 
-                currentState = DoorStates.DoorOpen;
+                case DoorStates.DoorClosed:
+                    _door.Close();
+                    _alarm.SignalAlarm();
+                    currentState = DoorStates.DoorBreached;
+                    break;
             }
-            else
-            {
-                _door.Close();
-
-                _alarm.SignalAlarm();
-
-                currentState = DoorStates.DoorBreached;
-            }
-
         }
 
-        public void DoorClosed()
+        public void HandleDoorClosedEvent(object source, DoorClosedEventArgs args)
         {
-            if (currentState == DoorStates.DoorOpen)
-                currentState = DoorStates.DoorClosed;
+            switch (currentState)
+            {
+                case DoorStates.DoorOpen:
+                    currentState = DoorStates.DoorClosed;
+                    break;
+
+            }
         }
     }
 }
