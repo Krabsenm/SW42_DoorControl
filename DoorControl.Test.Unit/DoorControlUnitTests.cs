@@ -82,23 +82,28 @@ namespace DoorControl.Test.Unit
         [Test]
         public void DoorOpenedEventHandlerTest_DoorIsOpened_CloseDoorIsCalled()
         {
+
+            // Arrange
+            _userValidation.ValidateEntryRequest("test").ReturnsForAnyArgs(true);
+
             //Act
             _door.DoorOpenedEvent += Raise.EventWith(new DoorOpenedEventArgs());
 
             //Assert
             _door.Received().Close();
+            _alarm.DidNotReceive().SignalAlarm();
         }
 
         [Test]
         public void DoorOpenedEventHandlerTest_DoorIsClosed_CloseDoorIsCalled()
         {
+            
             // Act
             _door.DoorOpenedEvent += Raise.EventWith(new DoorOpenedEventArgs());
 
 
             // Assert
             _door.Received().Close();
-            
         }
 
         [Test]
