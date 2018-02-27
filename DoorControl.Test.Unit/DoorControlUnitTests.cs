@@ -120,12 +120,37 @@ namespace DoorControl.Test.Unit
         }
 
         [Test]
-        public void HandleDoorClosedEvent_DoorClosed_returnsTrue()
+        public void RequestEntry_DoorStateNotClosed_DoesntCallValidateEntryRequest()
         {
-            //arrange
+            // Arrange
+            _userValidation.ValidateEntryRequest("test").ReturnsForAnyArgs(true);
 
             //Act
+            _uut.RequestEntry("test");
+            _door.DoorOpenedEvent += Raise.EventWith(new DoorOpenedEventArgs());
+            _userValidation.ClearReceivedCalls();
+            _uut.RequestEntry("test");
+
+            //Assert
+            _userValidation.DidNotReceiveWithAnyArgs().ValidateEntryRequest("");
+
+        }
+
+        [Test]
+        public void RequestEntry_DoorStatesCycled_CallValidateEntryRequest()
+        {
+            // Arrange
+            _userValidation.ValidateEntryRequest("test").ReturnsForAnyArgs(true);
+
+            //Act
+            _uut.RequestEntry("test");
+            _door.DoorOpenedEvent += Raise.EventWith(new DoorOpenedEventArgs());
             _door.DoorClosedEvent += Raise.EventWith(new DoorClosedEventArgs());
+            _userValidation.ClearReceivedCalls();
+            _uut.RequestEntry("test");
+
+            //Assert
+            _userValidation.ReceivedWithAnyArgs().ValidateEntryRequest("");
 
         }
     }

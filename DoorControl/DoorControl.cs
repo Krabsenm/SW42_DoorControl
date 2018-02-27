@@ -38,17 +38,20 @@ namespace DoorControl
 
         public void RequestEntry(string id)
         {
-            if (_userValidation.ValidateEntryRequest(id))
+            if (currentState == DoorStates.DoorClosed)
             {
-                _door.Open();
+                if (_userValidation.ValidateEntryRequest(id))
+                {
+                    _door.Open();
 
-                _entryNotification.NotifyEntryGranted();
+                    _entryNotification.NotifyEntryGranted();
 
-                currentState = DoorStates.DoorOpening;
-            }
-            else
-            {
-                _entryNotification.NotifyEntryDenied();
+                    currentState = DoorStates.DoorOpening;
+                }
+                else
+                {
+                    _entryNotification.NotifyEntryDenied();
+                }
             }
         }
 
