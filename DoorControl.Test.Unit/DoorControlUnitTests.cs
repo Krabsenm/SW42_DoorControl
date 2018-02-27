@@ -91,7 +91,6 @@ namespace DoorControl.Test.Unit
 
             //Assert
             _door.Received().Close();
-            _alarm.DidNotReceive().SignalAlarm();
         }
 
         [Test]
