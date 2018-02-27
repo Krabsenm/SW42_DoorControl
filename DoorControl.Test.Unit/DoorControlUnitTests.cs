@@ -84,6 +84,30 @@ namespace DoorControl.Test.Unit
         {
             //Act
             _door.DoorOpenedEvent += Raise.EventWith(new DoorOpenedEventArgs());
+        [Test]
+        public void DoorOpenedEventHandlerTest_DoorIsClosed_CloseDoorIsCalled()
+        {
+            // Act
+            _door.DoorOpenedEvent += Raise.EventWith(new DoorOpenedEventArgs());
+
+
+            // Assert
+            _door.Received().Close();
+            
+        }
+
+        [Test]
+        public void DoorOpenedEventHandlerTest_DoorIsClosed_AlarmIsRaised()
+        {
+            // Act
+            _door.DoorOpenedEvent += Raise.EventWith(new DoorOpenedEventArgs());
+
+
+            // Assert
+            _alarm.Received().SignalAlarm();
+
+        }
+
 
             //Assert
             _door.Received().Close();
