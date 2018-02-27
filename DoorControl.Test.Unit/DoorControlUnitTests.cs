@@ -117,5 +117,15 @@ namespace DoorControl.Test.Unit
             _alarm.Received().SignalAlarm();
 
         }
+
+        [Test]
+        public void HandleDoorClosedEvent_DoorClosed_returnsTrue()
+        {
+            //arrange
+
+            //Act
+            _door.DoorClosedEvent += Raise.EventWith(new DoorClosedEventArgs());
+
+        }
     }
 }
