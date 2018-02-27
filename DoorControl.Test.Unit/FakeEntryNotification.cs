@@ -2,7 +2,7 @@
 
 namespace DoorControl
 {
-    class EntryNotification : IEntryNotification
+    class FakeEntryNotification : IEntryNotification
     {
         public void NotifyEntryGranted()
         {

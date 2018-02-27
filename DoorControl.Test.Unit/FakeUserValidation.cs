@@ -2,11 +2,11 @@
 
 namespace DoorControl
 {
-    class UserValidation : IUserValidation
+    class FakeUserValidation : IUserValidation
     {
         private List<string> _validUserId; 
 
-        public UserValidation()
+        public FakeUserValidation()
         {
             _validUserId.Add("abc");
         }

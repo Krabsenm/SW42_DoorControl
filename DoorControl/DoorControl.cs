@@ -46,14 +46,10 @@ namespace DoorControl
 
                 currentState = DoorStates.DoorOpening;
             }
-
             else
             {
                 _entryNotification.NotifyEntryDenied();
             }
-
-
-
         }
 
 
@@ -81,7 +77,6 @@ namespace DoorControl
                 case DoorStates.DoorOpen:
                     currentState = DoorStates.DoorClosed;
                     break;
-
             }
         }
     }

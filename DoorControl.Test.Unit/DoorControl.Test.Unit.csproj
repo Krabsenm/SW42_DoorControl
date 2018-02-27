@@ -53,12 +53,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Alarm.cs" />
-    <Compile Include="Door.cs" />
     <Compile Include="DoorControlUnitTests.cs" />
-    <Compile Include="EntryNotification.cs" />
+    <Compile Include="FakeAlarm.cs" />
+    <Compile Include="FakeDoor.cs" />
+    <Compile Include="FakeEntryNotification.cs" />
+    <Compile Include="FakeUserValidation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserValidation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

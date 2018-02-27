@@ -2,7 +2,7 @@
 
 namespace DoorControl
 {
-    class Alarm : IAlarm
+    class FakeAlarm : IAlarm
     {
         public void SignalAlarm()
         {
