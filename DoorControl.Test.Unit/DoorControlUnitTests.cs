@@ -87,10 +87,12 @@ namespace DoorControl.Test.Unit
             _userValidation.ValidateEntryRequest("test").ReturnsForAnyArgs(true);
 
             //Act
+            _uut.RequestEntry("test");
             _door.DoorOpenedEvent += Raise.EventWith(new DoorOpenedEventArgs());
 
             //Assert
             _door.Received().Close();
+            _alarm.DidNotReceive().SignalAlarm();
         }
 
         [Test]
