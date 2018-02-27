@@ -79,6 +79,14 @@ namespace DoorControl.Test.Unit
             _entryNotification.Received().NotifyEntryDenied();
         }
 
+        [Test]
+        public void DoorOpenedEventHandlerTest_DoorIsOpened_DoorIsClosed()
+        {
+            //Act
+            _door.DoorOpenedEvent += Raise.EventWith(new DoorOpenedEventArgs());
 
+            //Assert
+            _door.Received().Close();
+        }
     }
 }
