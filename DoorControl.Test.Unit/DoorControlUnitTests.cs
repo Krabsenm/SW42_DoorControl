@@ -79,19 +79,43 @@ namespace DoorControl.Test.Unit
             _entryNotification.Received().NotifyEntryDenied();
         }
 
-
         [Test]
-        public void HandleDoorClosedEvent_DoorClosed_returnsTrue()
+        public void DoorOpenedEventHandlerTest_DoorIsOpened_CloseDoorIsCalled()
         {
-            //arrange
-            _door.DoorOpenedEvent += Raise.EventWith(new DoorOpenedEventArgs());
+
+            // Arrange
+            _userValidation.ValidateEntryRequest("test").ReturnsForAnyArgs(true);
 
             //Act
-            _door.DoorClosedEvent += Raise.EventWith(new DoorClosedEventArgs());
+            _door.DoorOpenedEvent += Raise.EventWith(new DoorOpenedEventArgs());
 
-            
+            //Assert
+            _door.Received().Close();
+            _alarm.DidNotReceive().SignalAlarm();
         }
 
+        [Test]
+        public void DoorOpenedEventHandlerTest_DoorIsClosed_CloseDoorIsCalled()
+        {
+            
+            // Act
+            _door.DoorOpenedEvent += Raise.EventWith(new DoorOpenedEventArgs());
 
+
+            // Assert
+            _door.Received().Close();
+        }
+
+        [Test]
+        public void DoorOpenedEventHandlerTest_DoorIsClosed_AlarmIsRaised()
+        {
+            // Act
+            _door.DoorOpenedEvent += Raise.EventWith(new DoorOpenedEventArgs());
+
+
+            // Assert
+            _alarm.Received().SignalAlarm();
+
+        }
     }
 }
