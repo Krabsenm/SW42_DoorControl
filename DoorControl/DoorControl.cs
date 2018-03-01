@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DoorControl
+﻿namespace DoorControl
 {
     public class DoorControl
     {
-        private DoorControl.DoorStates currentState;
+        private DoorStates _currentState;
 
         private enum DoorStates
         {
@@ -18,10 +12,10 @@ namespace DoorControl
             DoorBreached
         }
 
-        private IDoor _door;
-        private IUserValidation _userValidation;
-        private IEntryNotification _entryNotification;
-        private IAlarm _alarm;
+        private readonly IDoor _door;
+        private readonly IUserValidation _userValidation;
+        private readonly IEntryNotification _entryNotification;
+        private readonly IAlarm _alarm;
 
         public DoorControl(IDoor door, IUserValidation userValidation, IEntryNotification entryNotification, IAlarm alarm)
         {
@@ -29,8 +23,9 @@ namespace DoorControl
             _userValidation = userValidation;
             _entryNotification = entryNotification;
             _alarm = alarm;
-            currentState = DoorStates.DoorClosed;
+            _currentState = DoorStates.DoorClosed;
 
+            if (_door == null) return;
             _door.DoorOpenedEvent += HandleDoorOpenedEvent;
             _door.DoorClosedEvent += HandleDoorClosedEvent;
         }
@@ -38,47 +33,46 @@ namespace DoorControl
 
         public void RequestEntry(string id)
         {
-            if (currentState == DoorStates.DoorClosed)
+            if (_currentState != DoorStates.DoorClosed) return;
+
+            if (_userValidation.ValidateEntryRequest(id))
             {
-                if (_userValidation.ValidateEntryRequest(id))
-                {
-                    _door.Open();
+                _door.Open();
 
-                    _entryNotification.NotifyEntryGranted();
+                _entryNotification.NotifyEntryGranted();
 
-                    currentState = DoorStates.DoorOpening;
-                }
-                else
-                {
-                    _entryNotification.NotifyEntryDenied();
-                }
+                _currentState = DoorStates.DoorOpening;
+            }
+            else
+            {
+                _entryNotification.NotifyEntryDenied();
             }
         }
 
 
         public void HandleDoorOpenedEvent(object source, DoorOpenedEventArgs args)
         {
-            switch (currentState)
+            switch (_currentState)
             {
                 case DoorStates.DoorOpening:
                     _door.Close();
-                    currentState = DoorStates.DoorOpen;
+                    _currentState = DoorStates.DoorOpen;
                     break;
 
                 case DoorStates.DoorClosed:
                     _door.Close();
                     _alarm.SignalAlarm();
-                    currentState = DoorStates.DoorBreached;
+                    _currentState = DoorStates.DoorBreached;
                     break;
             }
         }
 
         public void HandleDoorClosedEvent(object source, DoorClosedEventArgs args)
         {
-            switch (currentState)
+            switch (_currentState)
             {
                 case DoorStates.DoorOpen:
-                    currentState = DoorStates.DoorClosed;
+                    _currentState = DoorStates.DoorClosed;
                     break;
             }
         }
