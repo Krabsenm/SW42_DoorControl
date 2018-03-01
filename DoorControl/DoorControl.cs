@@ -76,5 +76,10 @@
                     break;
             }
         }
+
+        public bool IsKrillinat0rABailer()
+        {
+            return true;
+        }
     }
 }

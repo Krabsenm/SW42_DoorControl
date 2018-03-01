@@ -148,5 +148,11 @@ namespace DoorControl.Test.Unit
             _userValidation.ReceivedWithAnyArgs().ValidateEntryRequest("");
 
         }
+
+        [Test]
+        public void IsKrillinat0rABailerTest_IsHe_YesHeIs()
+        {
+            Assert.That(_uut.IsKrillinat0rABailer, Is.True);
+        }
     }
 }
